@@ -1,0 +1,25 @@
+{% for intf in interfaces %}
+interface {{ intf.name }}
+ description {{ intf.description }}
+{% if intf.vrf is defined %}
+ vrf forwarding {{ intf.vrf }}
+{% endif %}
+ ip address {{ intf.ip }} {{ intf.mask }}
+{% if intf.ospf is defined %}
+{% if intf.ospf.network_type is defined %}
+ ip ospf network {{ intf.ospf.network_type }}
+{% endif %}
+{% if intf.ospf.area is defined %}
+ ip ospf {{ intf.ospf.process }} area {{ intf.ospf.area }}
+{% endif %}
+{% if intf.ospf.auth is defined and intf.ospf.auth %}
+ ip ospf authentication message-digest
+ ip ospf message-digest-key {{ ospf_auth.key_id }} md5 {{ ospf_auth.key }}
+{% endif %}
+{% endif %}
+{% if intf.mpls is defined and intf.mpls %}
+ mpls ip
+{% endif %}
+ no shutdown
+!
+{% endfor %}

@@ -1,0 +1,30 @@
+{% include 'base.j2' %}
+
+{% if role == 'pe' %}
+{% include 'vrf.j2' %}
+{% endif %}
+
+{% include 'interfaces.j2' %}
+
+{% if role in ['pe', 'p', 'rr'] %}
+{% include 'ospf.j2' %}
+{% include 'mpls.j2' %}
+{% include 'bgp.j2' %}
+{% include 'bgp_vpnv4.j2' %}
+{% endif %}
+
+{% if role == 'pe' %}
+{% include 'bgp_pe_ce.j2' %}
+{% endif %}
+
+{% if prefix_lists is defined %}
+{% include 'prefix_lists.j2' %}
+{% endif %}
+
+{% if route_maps is defined %}
+{% include 'route_maps.j2' %}
+{% endif %}
+
+{% if role == 'ce' %}
+{% include 'bgp_ce.j2' %}
+{% endif %}

@@ -1,0 +1,12 @@
+{% for rm in route_maps %}
+{% for entry in rm.entries %}
+route-map {{ rm.name }} {{ entry.action }} {{ entry.seq }}
+{% if rm.description is defined %}
+ description {{ rm.description }}
+{% endif %}
+{% if entry.match is defined %}
+ match {{ entry.match }}
+{% endif %}
+!
+{% endfor %}
+{% endfor %}

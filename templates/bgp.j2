@@ -1,0 +1,51 @@
+router bgp {{ bgp.asn }}
+ {# ! --- peer-policy templates --- #}
+{% for policy in bgp.peer_policies %}
+ template peer-policy {{ policy.name }}
+ {% if policy.next_hop_self is defined and policy.next_hop_self %}
+  next-hop-self
+{% endif %}
+{% if policy.send_community is defined %}
+  send-community both
+{% endif %}
+{% if policy.route_reflector_client is defined and policy.route_reflector_client %}
+  route-reflector-client
+{% endif %}
+ exit-peer-policy
+{% endfor %}
+!
+ {# ! --- peer-session templates --- #}
+{% for session in bgp.peer_sessions %}
+ template peer-session {{ session.name }}
+  remote-as {{ session.remote_as }}
+  description {{ session.description }}
+  password {{ session.password }}
+  update-source {{ session.update_source }}
+  timers 30 90
+  fall-over
+ exit-peer-session
+{% endfor %}
+!
+ bgp router-id {{ bgp.router_id }}
+ no bgp default ipv4-unicast
+ bgp log-neighbor-changes
+ bgp graceful-restart restart-time 120
+ bgp graceful-restart stalepath-time 360
+ bgp graceful-restart
+!
+ {# ! --- iBGP neighbors --- #}
+{% for peer in bgp.ibgp_peers %}
+ neighbor {{ peer.ip }} inherit peer-session {{ peer.peer_session }}
+ neighbor {{ peer.ip }} description {{ peer.description }}
+{% endfor %}
+!
+ address-family ipv4
+  no synchronization
+  {% for peer in bgp.ibgp_peers %}
+  neighbor {{ peer.ip }} activate
+  neighbor {{ peer.ip }} inherit peer-policy {{ peer.peer_policy }}
+  {% endfor %}
+  no auto-summary
+ exit-address-family
+!
+

@@ -1,0 +1,12 @@
+{% if bgp.vpnv4 is defined and bgp.vpnv4 %}
+address-family vpnv4
+{% for peer in bgp.ibgp_peers %}
+{% if peer.peer_policy_vpnv4 is defined %}
+  neighbor {{ peer.ip }} activate
+  neighbor {{ peer.ip }} send-community extended
+  neighbor {{ peer.ip }} inherit peer-policy {{ peer.peer_policy_vpnv4 }}
+{% endif %}
+{% endfor %}
+ exit-address-family
+{% endif %}
+!

@@ -1,0 +1,7 @@
+{% for pl in prefix_lists %}
+{% for entry in pl.entries %}
+ip prefix-list {{ pl.name }} seq {{ entry.seq }} {{ entry.action }} {{ entry.prefix }}{% if entry.le %} le {{ entry.le }}{% endif %}
+
+{% endfor %}
+!
+{% endfor %}

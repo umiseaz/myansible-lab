@@ -1,0 +1,8 @@
+router ospf {{ ospf.process_id }}
+ router-id {{ ospf.router_id }}
+ auto-cost reference-bandwidth {{ ospf_reference_bandwidth }}
+{% for intf in ospf.passive_interfaces %}
+ passive-interface {{ intf }}
+{% endfor %}
+!
+

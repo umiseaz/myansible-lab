@@ -1,0 +1,33 @@
+---
+all:
+  children:
+    core:
+      children:
+        pe:
+          hosts:
+            PE1:
+              ansible_host: 10.1.1.1
+            PE2:
+              ansible_host: 10.1.1.4
+        p:
+          hosts:
+            P1:
+              ansible_host: 10.1.1.2
+            P2:
+              ansible_host: 10.1.1.3
+        rr:
+          hosts:
+            RR1:
+              ansible_host: 10.1.1.5
+            RR2:
+              ansible_host: 10.1.1.6
+    ce:
+      hosts:
+        CE1:
+          ansible_host: 10.1.1.7
+        CE2:
+          ansible_host: 10.1.1.8
+        CE3:
+          ansible_host: 10.1.1.9
+        CE4:
+          ansible_host: 10.1.1.10
