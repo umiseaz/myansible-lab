@@ -1,0 +1,61 @@
+# host_vars/ce3.yaml
+hostname: CE3
+loopback_name: Loopback0
+role: ce
+iou: 9
+
+domain_name: lab.local
+
+mgmt:
+  vrf: Mgmt-intf
+  interface: Ethernet1/3
+  ip: 10.1.1.9
+  mask: 255.255.255.0
+  gateway: 10.1.1.254
+
+interfaces:
+  - name: Loopback0
+    description: "Router ID"
+    ip: 99.99.99.99
+    mask: 255.255.255.255
+  - name: Ethernet1/0
+    description: "link to PE1"
+    ip: 172.1.9.9
+    mask: 255.255.255.0
+
+bgp:
+  asn: 65002
+  router_id: 99.99.99.99
+  networks: 
+    - prefix: 99.99.99.99
+      mask: 255.255.255.255
+
+  neighbors:
+    - ip: 172.1.9.1
+      remote_as: 65
+      description: "PE1"
+      route_map_in: PE1-IN
+      route_map_out: PE1-OUT
+      # allowas_in: 1         # integer, renders as "allowas-in 1"
+
+prefix_lists:
+  - name: PE1-PREFIXES
+    entries:
+      - seq: 10
+        action: permit
+        prefix: 0.0.0.0/0
+        le: 32
+
+route_maps:
+  - name: PE1-IN
+    description: "Accept routes from PE1"
+    entries:
+      - seq: 10
+        action: permit
+        match: "ip address prefix-list PE1-PREFIXES"
+
+  - name: PE1-OUT
+    description: "Advertise CE3 prefixes to PE1"
+    entries:
+      - seq: 999
+        action: permit

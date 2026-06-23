@@ -1,0 +1,61 @@
+# host_vars/ce2.yaml
+hostname: CE2
+loopback_name: Loopback0
+role: ce
+iou: 8
+
+domain_name: lab.local
+
+mgmt:
+  vrf: Mgmt-intf
+  interface: Ethernet1/3
+  ip: 10.1.1.8
+  mask: 255.255.255.0
+  gateway: 10.1.1.254
+
+interfaces:
+  - name: Loopback0
+    description: "Router ID"
+    ip: 88.88.88.88
+    mask: 255.255.255.255
+  - name: Ethernet1/0
+    description: "link to PE2"
+    ip: 172.1.48.8
+    mask: 255.255.255.0
+
+bgp:
+  asn: 65001
+  router_id: 88.88.88.88
+  networks:
+    - prefix: 88.88.88.88
+      mask: 255.255.255.255
+
+  neighbors:
+    - ip: 172.1.48.4
+      remote_as: 65
+      description: "PE2"
+      route_map_in: PE2-IN
+      route_map_out: PE2-OUT
+      # allowas_in: 1         # integer, renders as "allowas-in 1"
+
+prefix_lists:
+  - name: PE2-PREFIXES
+    entries:
+      - seq: 10
+        action: permit
+        prefix: 0.0.0.0/0
+        le: 32
+
+route_maps:
+  - name: PE2-IN
+    description: "Accept routes from PE2"
+    entries:
+      - seq: 10
+        action: permit
+        match: "ip address prefix-list PE2-PREFIXES"
+
+  - name: PE2-OUT
+    description: "Advertise CE2 prefixes to PE2"
+    entries:
+      - seq: 999
+        action: permit

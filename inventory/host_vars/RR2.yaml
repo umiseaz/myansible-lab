@@ -1,0 +1,107 @@
+# host_vars/rr2.yaml
+hostname: RR2
+loopback_name: Loopback0
+role: rr
+iou: 6
+
+domain_name: lab.local
+
+mgmt:
+  vrf: Mgmt-intf
+  interface: Ethernet1/3
+  ip: 10.1.1.6
+  mask: 255.255.255.0
+  gateway: 10.1.1.254
+
+ospf:
+  process_id: 1
+  router_id: 6.6.6.6
+  passive_interfaces:
+    - Loopback0
+
+interfaces:
+  - name: Loopback0
+    description: "Router ID"
+    ip: 6.6.6.6
+    mask: 255.255.255.255
+    ospf:
+      process: 1
+      area: 0
+  - name: Ethernet0/2
+    description: "link to P2"
+    ip: 10.3.6.6
+    mask: 255.255.255.0
+    mpls: true
+    ospf:
+      process: 1
+      area: 0
+      network_type: point-to-point
+      auth: true
+
+bgp:
+  asn: 65
+  router_id: 6.6.6.6
+  cluster_id: 0.0.0.1
+  vpnv4: true
+  pe_ce: false
+
+  peer_sessions:
+    - name: edge-rr-clients
+      remote_as: 65
+      update_source: Loopback0
+      password: cisco
+      description: "Edge RR Clients"
+    - name: core-rr-clients
+      remote_as: 65
+      update_source: Loopback0
+      password: cisco
+      description: "Core RR Clients"
+    - name: rr-other
+      remote_as: 65
+      update_source: Loopback0
+      password: cisco
+      description: "Other RR Clients"
+
+  peer_policies:
+    - name: edge-rr-clients-ipv4
+      send_community: both
+      route_reflector_client: true
+    - name: edge-rr-clients-vpnv4
+      send_community: both
+      route_reflector_client: true
+    - name: core-rr-clients-ipv4
+      send_community: both
+      route_reflector_client: true
+    - name: rr-other-ipv4
+      send_community: both
+    - name: rr-other-vpnv4
+      send_community: both
+
+  ibgp_peers:
+    - ip: 1.1.1.1
+      description: "PE1"
+      peer_session: edge-rr-clients
+      peer_policy: edge-rr-clients-ipv4
+      peer_policy_vpnv4: edge-rr-clients-vpnv4
+
+    - ip: 4.4.4.4
+      description: "PE2"
+      peer_session: edge-rr-clients
+      peer_policy: edge-rr-clients-ipv4
+      peer_policy_vpnv4: edge-rr-clients-vpnv4
+
+    - ip: 2.2.2.2
+      description: "P1"
+      peer_session: core-rr-clients
+      peer_policy: core-rr-clients-ipv4
+
+    - ip: 3.3.3.3
+      description: "P2"
+      peer_session: core-rr-clients
+      peer_policy: core-rr-clients-ipv4
+
+    - ip: 5.5.5.5
+      description: "RR1"
+      peer_session: rr-other
+      peer_policy: rr-other-ipv4
+      peer_policy_vpnv4: rr-other-vpnv4

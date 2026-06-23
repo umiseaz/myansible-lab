@@ -1,0 +1,2 @@
+# inventory/group_vars/pe.yml
+role: pe

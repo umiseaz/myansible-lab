@@ -1,0 +1,152 @@
+# host_vars/pe2.yaml
+hostname: PE2
+loopback_name: Loopback0
+role: pe
+iou: 4
+
+domain_name: lab.local
+
+mgmt:
+  vrf: Mgmt-intf
+  interface: Ethernet1/3
+  ip: 10.1.1.4
+  mask: 255.255.255.0
+  gateway: 10.1.1.254
+
+ospf:
+  process_id: 1
+  router_id: 4.4.4.4
+  passive_interfaces:
+    - Loopback0
+
+vrfs:
+  - name: VRF_A
+    rd: "65:65002"
+    rt_export: "65:65001"
+    rt_import: "65:65001"
+  - name: VRF_B
+    rd: "65:65002"
+    rt_export: "65:65002"
+    rt_import: "65:65002"
+
+interfaces:
+  - name: Loopback0
+    description: "Router ID"
+    ip: 4.4.4.4
+    mask: 255.255.255.255
+    ospf:
+      process: 1
+      area: 0
+  - name: Ethernet0/0
+    description: "link to P2"
+    ip: 10.3.4.4
+    mask: 255.255.255.0
+    mpls: true
+    ospf:
+      process: 1
+      area: 0
+      network_type: point-to-point
+      auth: true
+  - name: Ethernet1/0
+    description: "VRF A to CE2"
+    ip: 172.1.48.4
+    mask: 255.255.255.0
+    vrf: VRF_A
+  - name: Ethernet1/1
+    description: "VRF B to CE4"
+    ip: 172.4.10.4
+    mask: 255.255.255.0
+    vrf: VRF_B
+
+
+bgp:
+  asn: 65
+  router_id: 4.4.4.4
+  vpnv4: true
+  pe_ce: true
+
+  peer_sessions:
+    - name: rr-peers
+      remote_as: 65
+      update_source: Loopback0
+      password: cisco
+      description: "RR Peers"
+
+  peer_policies:
+    - name: rr-peers-ipv4
+      send_community: both
+      next_hop_self: true
+    - name: rr-peers-vpnv4
+      send_community: both
+      next_hop_self: true
+
+  ibgp_peers:
+    - ip: 5.5.5.5
+      description: "RR1"
+      peer_session: rr-peers
+      peer_policy: rr-peers-ipv4
+      peer_policy_vpnv4: rr-peers-vpnv4
+    - ip: 6.6.6.6
+      description: "RR2"
+      peer_session: rr-peers
+      peer_policy: rr-peers-ipv4
+      peer_policy_vpnv4: rr-peers-vpnv4
+
+  ebgp_peers:
+    - ip: 172.1.48.8
+      remote_as: 65001
+      description: "CE2"
+      vrf: VRF_A
+      as_override: true
+      route_map_in: CE2-IN
+      route_map_out: CE2-OUT
+    - ip: 172.4.10.10
+      remote_as: 65002
+      description: "CE4"
+      vrf: VRF_B
+      as_override: true
+      route_map_in: CE4-IN
+      route_map_out: CE4-OUT
+
+prefix_lists:
+  - name: CE2-PREFIXES
+    entries:
+      - seq: 10
+        action: permit
+        prefix: 88.88.88.88/32
+      - seq: 20
+        action: permit
+        prefix: 172.1.48.0/24
+  - name: CE4-PREFIXES
+    entries:
+      - seq: 10
+        action: permit
+        prefix: 100.100.100.100/32
+      - seq: 20
+        action: permit
+        prefix: 172.4.10.0/24
+
+route_maps:
+  - name: CE2-IN
+    description: "Accept CE2 prefixes"
+    entries:
+      - seq: 10
+        action: permit
+        match: "ip address prefix-list CE2-PREFIXES"
+  - name: CE4-IN
+    description: "Accept CE4 prefixes"
+    entries:
+      - seq: 10
+        action: permit
+        match: "ip address prefix-list CE4-PREFIXES"
+
+  - name: CE2-OUT
+    description: "Advertise VRF_A routes to CE2"
+    entries:
+      - seq: 999
+        action: permit
+  - name: CE4-OUT
+    description: "Advertise VRF_B routes to CE4"
+    entries:
+      - seq: 999
+        action: permit

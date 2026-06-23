@@ -1,0 +1,14 @@
+---
+- name: Deploy MPLS L3VPN configs to devices
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Push rendered config to device
+      cisco.ios.ios_config:
+        src: "{{ playbook_dir }}/../rendered/{{ inventory_hostname | lower }}.cfg"
+      register: config_result
+
+    - name: Show if config changed
+      debug:
+        msg: "{{ inventory_hostname }}: {{ 'CHANGED' if config_result.changed else 'NO CHANGE' }}"

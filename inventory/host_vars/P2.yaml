@@ -1,0 +1,90 @@
+# host_vars/p2.yaml
+hostname: P2
+loopback_name: Loopback0
+role: p
+iou: 3
+
+domain_name: lab.local
+
+mgmt:
+  vrf: Mgmt-intf
+  interface: Ethernet1/3
+  ip: 10.1.1.3
+  mask: 255.255.255.0
+  gateway: 10.1.1.254
+
+ospf:
+  process_id: 1
+  router_id: 3.3.3.3
+  passive_interfaces:
+    - Loopback0
+
+interfaces:
+  - name: Loopback0
+    description: "Router ID"
+    ip: 3.3.3.3
+    mask: 255.255.255.255
+    ospf:
+      process: 1
+      area: 0
+  - name: Ethernet0/0
+    description: "link to PE2"
+    ip: 10.3.4.3
+    mask: 255.255.255.0
+    mpls: true
+    ospf:
+      process: 1
+      area: 0
+      network_type: point-to-point
+      auth: true
+  - name: Ethernet0/1
+    description: "link to P1"
+    ip: 10.2.3.3
+    mask: 255.255.255.0
+    mpls: true
+    ospf:
+      process: 1
+      area: 0
+      network_type: point-to-point
+      auth: true
+  - name: Ethernet0/2
+    description: "link to RR2"
+    ip: 10.3.6.3
+    mask: 255.255.255.0
+    mpls: true
+    ospf:
+      process: 1
+      area: 0
+      network_type: point-to-point
+      auth: true
+
+bgp:
+  asn: 65
+  router_id: 3.3.3.3
+  vpnv4: false
+  pe_ce: false
+
+  peer_sessions:
+    - name: rr-peers
+      remote_as: 65
+      update_source: Loopback0
+      password: cisco
+      description: "RR Peers"
+
+  peer_policies:
+    - name: rr-peers-ipv4
+      send_community: both
+      next_hop_self: true
+    - name: rr-peers-vpnv4
+      send_community: both
+      next_hop_self: true
+
+  ibgp_peers:
+    - ip: 5.5.5.5
+      description: "RR1"
+      peer_session: rr-peers
+      peer_policy: rr-peers-ipv4
+    - ip: 6.6.6.6
+      description: "RR2"
+      peer_session: rr-peers
+      peer_policy: rr-peers-ipv4

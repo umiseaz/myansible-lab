@@ -1,0 +1,24 @@
+---
+ansible_user: admin
+ansible_password: admin
+ansible_connection: network_cli
+ansible_network_os: cisco.ios.ios
+ansible_become: yes
+ansible_become_method: enable
+
+ntp:
+  servers:
+    - 10.1.1.254
+  source: Ethernet1/3
+
+syslog:
+  servers:
+    - 10.1.1.254
+  source: Ethernet1/3
+  facility: local6
+
+ospf_auth:
+  key_id: 1
+  key: "ospf@lab123"
+
+ospf_reference_bandwidth: 100
