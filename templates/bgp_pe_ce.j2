@@ -12,6 +12,7 @@ address-family ipv4 vrf {{ peer.vrf }}
   neighbor {{ peer.ip }} route-map {{ peer.route_map_out }} out
   no synchronization
 exit-address-family
+!
 {% endfor %}
 {% endif %}
 !
