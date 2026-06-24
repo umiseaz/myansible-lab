@@ -1,0 +1,15 @@
+---
+- name: Save running-config to startup-config on all devices
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Write memory (save running-config)
+      cisco.ios.ios_command:
+        commands:
+          - write memory
+      register: save_result
+
+    - name: Confirm save
+      debug:
+        msg: "{{ inventory_hostname }}: saved"
