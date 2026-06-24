@@ -1,0 +1,145 @@
+(ansible-env) khau@nuc:~/ansible-env/myansible-lab$ ansible all -i inventory/hosts.yaml -m ping
+CE4 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+PE1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+CE1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+CE3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+CE2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+P1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+RR2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+PE2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+P2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+RR1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+(ansible-env) khau@nuc:~/ansible-env/myansible-lab$ ansible-inventory -i inventory/hosts.yaml --graph
+@all:
+  |--@ungrouped:
+  |--@core:
+  |  |--@pe:
+  |  |  |--PE1
+  |  |  |--PE2
+  |  |--@p:
+  |  |  |--P1
+  |  |  |--P2
+  |  |--@rr:
+  |  |  |--RR1
+  |  |  |--RR2
+  |--@ce:
+  |  |--CE1
+  |  |--CE2
+  |  |--CE3
+  |  |--CE4
+
+ansible-inventory -i inventory/hosts.yaml --host RR1 --yaml
+or
+ansible-inventory -i inventory/hosts.yaml --host RR1
+
+
+Limit Execution to a Single Host or Group
+ansible-playbook -i inventory/hosts.yaml playbooks/render.yaml --limit PE1,CE1
+
+Run a "Dry Run" (Check Mode)
+ansible-playbook -i inventory/hosts.yaml playbooks/deploy.yaml --check
+
+Ad-Hoc Commands (Quick Actions Without Playbooks)
+ansible pe -i inventory/hosts.yaml -m cisco.ios.ios_command -a "commands='show ip bgp summary'"
+
+Check Ansible Configuration
+ansible-config dump --only-changed
+
+
+
+(ansible-env) khau@nuc:~/ansible-env/myansible-lab$ ansible-playbook playbooks/render.yaml --list-tasks
+
+playbook: playbooks/render.yaml
+
+  play #1 (all): Render MPLS L3VPN configs	TAGS: []
+    tasks:
+      Ensure rendered directory exists	TAGS: []
+      Render master.j2 template	TAGS: []
+
+
+
+(ansible-env) khau@nuc:~/ansible-env/myansible-lab$ ansible-playbook playbooks/render.yaml --list-tags
+
+playbook: playbooks/render.yaml
+
+  play #1 (all): Render MPLS L3VPN configs	TAGS: []
+      TASK TAGS: []
+
+
+ansible-playbook -i inventory/hosts.yaml playbooks/render.yaml 
+
+or
+
+ansible-env) khau@nuc:~/ansible-env/myansible-lab$ ansible-playbook playbooks/render.yaml 
+
+PLAY [Render MPLS L3VPN configs] **********************************************************************************************************************************************************************************
+
+TASK [Ensure rendered directory exists] ***************************************************************************************************************************************************************************
+ok: [CE1]
+
+TASK [Render master.j2 template] **********************************************************************************************************************************************************************************
+ok: [CE3]
+ok: [CE2]
+ok: [CE4]
+ok: [CE1]
+ok: [PE1]
+ok: [PE2]
+ok: [RR1]
+ok: [P1]
+ok: [P2]
+ok: [RR2]
+
+PLAY RECAP ********************************************************************************************************************************************************************************************************
+CE1                        : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+CE2                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+CE3                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+CE4                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+P1                         : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+P2                         : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+PE1                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+PE2                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+RR1                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+RR2                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+(ansible-env) khau@nuc:~/ansible-env/myansible-lab$ 
+
+
+
+
+
+ansible-playbook playbooks/deploy.yaml --limit PE2
+
+cd ~/ansible-env/myansible-lab
+ansible-inventory --host PE2 | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d['bgp']['ebgp_peers'], indent=2))"
+ansible-inventory --host PE1 | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d['bgp']['ebgp_peers'], indent=2))"

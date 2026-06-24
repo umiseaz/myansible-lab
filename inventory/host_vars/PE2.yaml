@@ -21,7 +21,7 @@ ospf:
 
 vrfs:
   - name: VRF_A
-    rd: "65:65002"
+    rd: "65:65001"
     rt_export: "65:65001"
     rt_import: "65:65001"
   - name: VRF_B
