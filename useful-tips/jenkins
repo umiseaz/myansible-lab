@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Render Configs') {
+            steps {
+                sh '''
+                    cd /home/khau/nornir-env/mynornir-lab
+                    /home/khau/nornir-env/bin/python3 render.py
+                '''
+            }
+        }
+    }
+}
+
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Render Configs') {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install -r requirements.txt
+                    python3 render.py
+                '''
+            }
+        }
+    }
+}

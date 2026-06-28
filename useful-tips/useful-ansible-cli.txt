@@ -143,3 +143,27 @@ ansible-playbook playbooks/deploy.yaml --limit PE2
 cd ~/ansible-env/myansible-lab
 ansible-inventory --host PE2 | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d['bgp']['ebgp_peers'], indent=2))"
 ansible-inventory --host PE1 | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d['bgp']['ebgp_peers'], indent=2))"
+
+
+# standard work flow
+# Nornir
+python3 render.py
+python3 healthcheck.py
+python3 deploy.py --yes
+python3 healthcheck.py
+python3 save.py
+
+# Ansible
+ansible-playbook playbooks/render.yaml
+python3 healthcheck.py
+ansible-playbook playbooks/deploy.yaml
+python3 healthcheck.py
+ansible-playbook playbooks/save.yaml
+
+
+
+
+khau@nuc:~/docker/jenkins$ docker compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+8394bb09055441a1ab5a2054d2c8d256
+
+http://localhost:8080/login?from=%2F
