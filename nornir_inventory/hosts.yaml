@@ -1,0 +1,70 @@
+---
+PE1:
+  hostname: 10.1.1.1
+  groups:
+    - core
+  data:
+    role: pe
+
+PE2:
+  hostname: 10.1.1.4
+  groups:
+    - core
+  data:
+    role: pe
+
+P1:
+  hostname: 10.1.1.2
+  groups:
+    - core
+  data:
+    role: p
+
+P2:
+  hostname: 10.1.1.3
+  groups:
+    - core
+  data:
+    role: p
+
+RR1:
+  hostname: 10.1.1.5
+  groups:
+    - core
+  data:
+    role: rr
+
+RR2:
+  hostname: 10.1.1.6
+  groups:
+    - core
+  data:
+    role: rr
+
+CE1:
+  hostname: 10.1.1.7
+  groups:
+    - ce
+  data:
+    role: ce
+
+CE2:
+  hostname: 10.1.1.8
+  groups:
+    - ce
+  data:
+    role: ce
+
+CE3:
+  hostname: 10.1.1.9
+  groups:
+    - ce
+  data:
+    role: ce
+
+CE4:
+  hostname: 10.1.1.10
+  groups:
+    - ce
+  data:
+    role: ce

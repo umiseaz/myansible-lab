@@ -339,9 +339,9 @@ def main():
         inventory={
             "plugin": "SimpleInventory",
             "options": {
-                "host_file":     os.path.join(BASE_DIR, "inventory/hosts.yaml"),
-                "group_file":    os.path.join(BASE_DIR, "inventory/groups.yaml"),
-                "defaults_file": os.path.join(BASE_DIR, "inventory/defaults.yaml"),
+                "host_file":     os.path.join(BASE_DIR, "nornir_inventory/hosts.yaml"),
+                "group_file":    os.path.join(BASE_DIR, "nornir_inventory/groups.yaml"),
+                "defaults_file": os.path.join(BASE_DIR, "nornir_inventory/defaults.yaml"),
             },
         },
     )
