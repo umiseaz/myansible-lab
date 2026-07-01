@@ -4,13 +4,13 @@ ansible_connection: network_cli
 ansible_user: admin
 ansible_password: admin
 ansible_network_os: cisco.ios.ios
-ansible_become: yes
+ansible_become: true
 ansible_become_method: enable
 
 # ==============================================================================
-# SSH Workaround for GNS3 IOU 
+# SSH Workaround for GNS3 IOU
 # ==============================================================================
-# Forces Ansible to use libssh and respect the legacy crypto settings 
+# Forces Ansible to use libssh and respect the legacy crypto settings
 # defined in /home/khau/.ssh/config (e.g., diffie-hellman-group14-sha1, ssh-rsa)
 ansible_network_cli_ssh_type: libssh
 ansible_ssh_extra_args: "-F /home/khau/.ssh/config"
