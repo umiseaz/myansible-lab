@@ -2,11 +2,20 @@
 - name: Deploy MPLS L3VPN configs to devices
   hosts: all
   gather_facts: no
-
+  vars:
+    rendered_dir: "{{ (playbook_dir + '/../rendered') | realpath }}"
   tasks:
+    - name: Read rendered config file content
+      set_fact:
+        config_lines: >-
+          {{ (lookup('file', rendered_dir + '/' + (inventory_hostname | lower) + '.cfg')).splitlines()
+             | reject('match', '^\s*!')
+             | reject('equalto', '')
+             | list }}
+
     - name: Push rendered config to device
       cisco.ios.ios_config:
-        src: "{{ playbook_dir }}/../rendered/{{ inventory_hostname | lower }}.cfg"
+        lines: "{{ config_lines }}"
       register: config_result
       retries: 2
       delay: 5
