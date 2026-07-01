@@ -26,7 +26,7 @@ interfaces:
 bgp:
   asn: 65001
   router_id: 77.77.77.77
-  networks: 
+  networks:
     - prefix: 77.77.77.77
       mask: 255.255.255.255
 

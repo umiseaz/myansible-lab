@@ -26,7 +26,7 @@ interfaces:
 bgp:
   asn: 65002
   router_id: 99.99.99.99
-  networks: 
+  networks:
     - prefix: 99.99.99.99
       mask: 255.255.255.255
 
