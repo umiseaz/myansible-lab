@@ -1,0 +1,929 @@
+{
+  "timestamp": "2026-07-01_15-24-54",
+  "hosts": {
+    "PE1": {
+      "show ip ospf neighbor": [
+        {
+          "neighbor_id": "2.2.2.2",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:35",
+          "ip_address": "10.1.2.2",
+          "interface": "Ethernet0/0"
+        }
+      ],
+      "show mpls ldp neighbor": [
+        {
+          "PEER": "2.2.2.2",
+          "LOCAL": "1.1.1.1",
+          "STATE": "Oper",
+          "UPTIME": "00:09:27",
+          "INTERFACE": "Ethernet0/0"
+        }
+      ],
+      "show ip bgp summary": [
+        {
+          "router_id": "1.1.1.1",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "5.5.5.5",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "33",
+          "messages_sent": "29",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:27",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "1.1.1.1",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "6.6.6.6",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "33",
+          "messages_sent": "28",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:27",
+          "state_or_prefixes_received": "0"
+        }
+      ],
+      "show bgp vpnv4 unicast all summary": [
+        {
+          "NEIGHBOR": "5.5.5.5",
+          "AS": "65",
+          "UPDOWN": "00:09:27",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "6.6.6.6",
+          "AS": "65",
+          "UPDOWN": "00:09:27",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "172.1.9.9",
+          "AS": "65002",
+          "UPDOWN": "00:09:33",
+          "STATE_PFXRCD": "1"
+        },
+        {
+          "NEIGHBOR": "172.1.17.7",
+          "AS": "65001",
+          "UPDOWN": "00:09:32",
+          "STATE_PFXRCD": "1"
+        }
+      ]
+    },
+    "PE2": {
+      "show ip ospf neighbor": [
+        {
+          "neighbor_id": "3.3.3.3",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:33",
+          "ip_address": "10.3.4.3",
+          "interface": "Ethernet0/0"
+        }
+      ],
+      "show mpls ldp neighbor": [
+        {
+          "PEER": "3.3.3.3",
+          "LOCAL": "4.4.4.4",
+          "STATE": "Oper",
+          "UPTIME": "00:09:29",
+          "INTERFACE": "Ethernet0/0"
+        }
+      ],
+      "show ip bgp summary": [
+        {
+          "router_id": "4.4.4.4",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "5.5.5.5",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "33",
+          "messages_sent": "28",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:29",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "4.4.4.4",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "6.6.6.6",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "33",
+          "messages_sent": "27",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:28",
+          "state_or_prefixes_received": "0"
+        }
+      ],
+      "show bgp vpnv4 unicast all summary": [
+        {
+          "NEIGHBOR": "5.5.5.5",
+          "AS": "65",
+          "UPDOWN": "00:09:29",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "6.6.6.6",
+          "AS": "65",
+          "UPDOWN": "00:09:28",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "172.1.48.8",
+          "AS": "65001",
+          "UPDOWN": "00:09:35",
+          "STATE_PFXRCD": "1"
+        },
+        {
+          "NEIGHBOR": "172.4.10.10",
+          "AS": "65002",
+          "UPDOWN": "00:09:36",
+          "STATE_PFXRCD": "1"
+        }
+      ]
+    },
+    "P1": {
+      "show ip ospf neighbor": [
+        {
+          "neighbor_id": "5.5.5.5",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:31",
+          "ip_address": "10.2.5.5",
+          "interface": "Ethernet0/2"
+        },
+        {
+          "neighbor_id": "3.3.3.3",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:34",
+          "ip_address": "10.2.3.3",
+          "interface": "Ethernet0/1"
+        },
+        {
+          "neighbor_id": "1.1.1.1",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:31",
+          "ip_address": "10.1.2.1",
+          "interface": "Ethernet0/0"
+        }
+      ],
+      "show mpls ldp neighbor": [
+        {
+          "PEER": "3.3.3.3",
+          "LOCAL": "2.2.2.2",
+          "STATE": "Oper",
+          "UPTIME": "00:09:31",
+          "INTERFACE": "Ethernet0/1"
+        },
+        {
+          "PEER": "5.5.5.5",
+          "LOCAL": "2.2.2.2",
+          "STATE": "Oper",
+          "UPTIME": "00:09:31",
+          "INTERFACE": "Ethernet0/2"
+        },
+        {
+          "PEER": "1.1.1.1",
+          "LOCAL": "2.2.2.2",
+          "STATE": "Oper",
+          "UPTIME": "00:09:31",
+          "INTERFACE": "Ethernet0/0"
+        }
+      ],
+      "show ip bgp summary": [
+        {
+          "router_id": "2.2.2.2",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "5.5.5.5",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "24",
+          "messages_sent": "24",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:30",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "2.2.2.2",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "6.6.6.6",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "25",
+          "messages_sent": "25",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:30",
+          "state_or_prefixes_received": "0"
+        }
+      ]
+    },
+    "P2": {
+      "show ip ospf neighbor": [
+        {
+          "neighbor_id": "6.6.6.6",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:31",
+          "ip_address": "10.3.6.6",
+          "interface": "Ethernet0/2"
+        },
+        {
+          "neighbor_id": "2.2.2.2",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:38",
+          "ip_address": "10.2.3.2",
+          "interface": "Ethernet0/1"
+        },
+        {
+          "neighbor_id": "4.4.4.4",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:35",
+          "ip_address": "10.3.4.4",
+          "interface": "Ethernet0/0"
+        }
+      ],
+      "show mpls ldp neighbor": [
+        {
+          "PEER": "2.2.2.2",
+          "LOCAL": "3.3.3.3",
+          "STATE": "Oper",
+          "UPTIME": "00:09:33",
+          "INTERFACE": "Ethernet0/1"
+        },
+        {
+          "PEER": "6.6.6.6",
+          "LOCAL": "3.3.3.3",
+          "STATE": "Oper",
+          "UPTIME": "00:09:32",
+          "INTERFACE": "Ethernet0/2"
+        },
+        {
+          "PEER": "4.4.4.4",
+          "LOCAL": "3.3.3.3",
+          "STATE": "Oper",
+          "UPTIME": "00:09:32",
+          "INTERFACE": "Ethernet0/0"
+        }
+      ],
+      "show ip bgp summary": [
+        {
+          "router_id": "3.3.3.3",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "5.5.5.5",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "24",
+          "messages_sent": "24",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:32",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "3.3.3.3",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "6.6.6.6",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "24",
+          "messages_sent": "24",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:32",
+          "state_or_prefixes_received": "0"
+        }
+      ]
+    },
+    "RR1": {
+      "show ip ospf neighbor": [
+        {
+          "neighbor_id": "2.2.2.2",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:39",
+          "ip_address": "10.2.5.2",
+          "interface": "Ethernet0/2"
+        }
+      ],
+      "show mpls ldp neighbor": [
+        {
+          "PEER": "2.2.2.2",
+          "LOCAL": "5.5.5.5",
+          "STATE": "Oper",
+          "UPTIME": "00:09:34",
+          "INTERFACE": "Ethernet0/2"
+        }
+      ],
+      "show ip bgp summary": [
+        {
+          "router_id": "5.5.5.5",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "1.1.1.1",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "29",
+          "messages_sent": "33",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:33",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "5.5.5.5",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "2.2.2.2",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "24",
+          "messages_sent": "24",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:33",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "5.5.5.5",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "3.3.3.3",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "24",
+          "messages_sent": "24",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:33",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "5.5.5.5",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "4.4.4.4",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "28",
+          "messages_sent": "33",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:33",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "5.5.5.5",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "6.6.6.6",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "33",
+          "messages_sent": "32",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:33",
+          "state_or_prefixes_received": "0"
+        }
+      ],
+      "show bgp vpnv4 unicast all summary": [
+        {
+          "NEIGHBOR": "1.1.1.1",
+          "AS": "65",
+          "UPDOWN": "00:09:33",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "4.4.4.4",
+          "AS": "65",
+          "UPDOWN": "00:09:33",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "6.6.6.6",
+          "AS": "65",
+          "UPDOWN": "00:09:33",
+          "STATE_PFXRCD": "8"
+        }
+      ]
+    },
+    "RR2": {
+      "show ip ospf neighbor": [
+        {
+          "neighbor_id": "3.3.3.3",
+          "priority": "0",
+          "state": "FULL/  -",
+          "dead_time": "00:00:39",
+          "ip_address": "10.3.6.3",
+          "interface": "Ethernet0/2"
+        }
+      ],
+      "show mpls ldp neighbor": [
+        {
+          "PEER": "3.3.3.3",
+          "LOCAL": "6.6.6.6",
+          "STATE": "Oper",
+          "UPTIME": "00:09:35",
+          "INTERFACE": "Ethernet0/2"
+        }
+      ],
+      "show ip bgp summary": [
+        {
+          "router_id": "6.6.6.6",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "1.1.1.1",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "29",
+          "messages_sent": "33",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:35",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "6.6.6.6",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "2.2.2.2",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "25",
+          "messages_sent": "25",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:34",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "6.6.6.6",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "3.3.3.3",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "24",
+          "messages_sent": "24",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:35",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "6.6.6.6",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "4.4.4.4",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "28",
+          "messages_sent": "33",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:34",
+          "state_or_prefixes_received": "0"
+        },
+        {
+          "router_id": "6.6.6.6",
+          "local_as": "65",
+          "address_family": "",
+          "bgp_neighbor": "5.5.5.5",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "33",
+          "messages_sent": "33",
+          "table_version": "1",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:35",
+          "state_or_prefixes_received": "0"
+        }
+      ],
+      "show bgp vpnv4 unicast all summary": [
+        {
+          "NEIGHBOR": "1.1.1.1",
+          "AS": "65",
+          "UPDOWN": "00:09:35",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "4.4.4.4",
+          "AS": "65",
+          "UPDOWN": "00:09:34",
+          "STATE_PFXRCD": "4"
+        },
+        {
+          "NEIGHBOR": "5.5.5.5",
+          "AS": "65",
+          "UPDOWN": "00:09:35",
+          "STATE_PFXRCD": "8"
+        }
+      ]
+    },
+    "CE1": {
+      "show ip bgp summary": [
+        {
+          "router_id": "77.77.77.77",
+          "local_as": "65001",
+          "address_family": "",
+          "bgp_neighbor": "172.1.17.1",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "19",
+          "messages_sent": "14",
+          "table_version": "5",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:41",
+          "state_or_prefixes_received": "3"
+        }
+      ],
+      "show ip route": [
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "77.77.77.77",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Loopback0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "88.88.88.88",
+          "prefix_length": "32",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.1.17.1",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:27",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "172.1.17.0",
+          "prefix_length": "24",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "L",
+          "type": "",
+          "network": "172.1.17.7",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "172.1.48.0",
+          "prefix_length": "24",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.1.17.1",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:27",
+          "flag": ""
+        }
+      ]
+    },
+    "CE2": {
+      "show ip bgp summary": [
+        {
+          "router_id": "88.88.88.88",
+          "local_as": "65001",
+          "address_family": "",
+          "bgp_neighbor": "172.1.48.4",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "19",
+          "messages_sent": "14",
+          "table_version": "5",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:44",
+          "state_or_prefixes_received": "3"
+        }
+      ],
+      "show ip route": [
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "77.77.77.77",
+          "prefix_length": "32",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.1.48.4",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:28",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "88.88.88.88",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Loopback0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "172.1.17.0",
+          "prefix_length": "24",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.1.48.4",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:28",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "172.1.48.0",
+          "prefix_length": "24",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "L",
+          "type": "",
+          "network": "172.1.48.8",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        }
+      ]
+    },
+    "CE3": {
+      "show ip bgp summary": [
+        {
+          "router_id": "99.99.99.99",
+          "local_as": "65002",
+          "address_family": "",
+          "bgp_neighbor": "172.1.9.1",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "19",
+          "messages_sent": "14",
+          "table_version": "5",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:45",
+          "state_or_prefixes_received": "3"
+        }
+      ],
+      "show ip route": [
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "99.99.99.99",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Loopback0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "100.100.100.100",
+          "prefix_length": "32",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.1.9.1",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:29",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "172.1.9.0",
+          "prefix_length": "24",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "L",
+          "type": "",
+          "network": "172.1.9.9",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "172.4.10.0",
+          "prefix_length": "24",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.1.9.1",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:29",
+          "flag": ""
+        }
+      ]
+    },
+    "CE4": {
+      "show ip bgp summary": [
+        {
+          "router_id": "100.100.100.100",
+          "local_as": "65002",
+          "address_family": "",
+          "bgp_neighbor": "172.4.10.4",
+          "bgp_version": "4",
+          "neighbor_as": "65",
+          "messages_received": "19",
+          "messages_sent": "15",
+          "table_version": "5",
+          "input_queue": "0",
+          "output_queue": "0",
+          "up_down": "00:09:47",
+          "state_or_prefixes_received": "3"
+        }
+      ],
+      "show ip route": [
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "99.99.99.99",
+          "prefix_length": "32",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.4.10.4",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:30",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "100.100.100.100",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Loopback0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "B",
+          "type": "",
+          "network": "172.1.9.0",
+          "prefix_length": "24",
+          "distance": "20",
+          "metric": "0",
+          "nexthop_ip": "172.4.10.4",
+          "nexthop_vrf": "",
+          "nexthop_if": "",
+          "uptime": "00:08:30",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "C",
+          "type": "",
+          "network": "172.4.10.0",
+          "prefix_length": "24",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        },
+        {
+          "vrf": "",
+          "protocol": "L",
+          "type": "",
+          "network": "172.4.10.10",
+          "prefix_length": "32",
+          "distance": "",
+          "metric": "",
+          "nexthop_ip": "",
+          "nexthop_vrf": "",
+          "nexthop_if": "Ethernet1/0",
+          "uptime": "",
+          "flag": ""
+        }
+      ]
+    }
+  }
+}

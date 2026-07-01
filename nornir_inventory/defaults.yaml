@@ -1,0 +1,21 @@
+# inventory/defaults.yaml
+---
+username: admin
+password: admin
+
+ntp:
+  servers:
+    - 10.1.1.254
+  source: Ethernet1/3
+
+syslog:
+  servers:
+    - 10.1.1.254
+  source: Ethernet1/3
+  facility: local6
+
+ospf_auth:
+  key_id: 1
+  key: "ospf@lab123"
+
+ospf_reference_bandwidth: 100
