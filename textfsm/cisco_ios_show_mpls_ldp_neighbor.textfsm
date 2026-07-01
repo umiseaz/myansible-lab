@@ -1,0 +1,13 @@
+Value PEER (\d+\.\d+\.\d+\.\d+)
+Value LOCAL (\d+\.\d+\.\d+\.\d+)
+Value STATE (\w+)
+Value UPTIME (\S+)
+Value INTERFACE (\S+)
+
+Start
+  ^\s+Peer LDP Ident:\s+${PEER}:\d+;\s+Local LDP Ident\s+${LOCAL}:\d+ -> Continue
+  ^\s+State:\s+${STATE};
+  ^\s+Up time:\s+${UPTIME}
+  ^\s+\S+,\s+Src IP addr:\s+\S+ -> Continue
+  ^\s+${INTERFACE},\s+Src IP addr -> Record
+  ^. -> Continue

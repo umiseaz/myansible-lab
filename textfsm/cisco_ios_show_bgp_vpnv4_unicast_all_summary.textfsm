@@ -1,0 +1,8 @@
+Value NEIGHBOR (\d+\.\d+\.\d+\.\d+)
+Value AS (\d+)
+Value UPDOWN (\S+)
+Value STATE_PFXRCD (\S+)
+
+Start
+  ^\s*${NEIGHBOR}\s+\d+\s+${AS}\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+${UPDOWN}\s+${STATE_PFXRCD} -> Record
+  ^. -> Continue
