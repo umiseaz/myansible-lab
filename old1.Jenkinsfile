@@ -75,15 +75,9 @@ sys.exit(1 if failed else 0)
             }
         }
 
-        // TEMPORARY: also allow deploy on the debug branch so we can see
-        // real Jenkins-workspace output. Revert to `branch 'main'` only
-        // once the file-not-found issue is diagnosed and fixed.
         stage('Deploy (main only)') {
             when {
-                anyOf {
-                    branch 'main'
-                    branch 'feature/add-jenkins-ci'
-                }
+                branch 'main'
             }
             steps {
                 sh '''
