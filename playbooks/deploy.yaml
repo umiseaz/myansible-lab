@@ -2,15 +2,17 @@
 - name: Deploy MPLS L3VPN configs to devices
   hosts: all
   gather_facts: no
+  vars:
+    rendered_dir: "{{ (playbook_dir + '/../rendered') | realpath }}"
   tasks:
     - name: Show resolved config path
       debug:
-        msg: "Looking for: {{ playbook_dir }}/../rendered/{{ inventory_hostname | lower }}.cfg"
+        msg: "Looking for: {{ rendered_dir }}/{{ inventory_hostname | lower }}.cfg"
 
     - name: Check if rendered config file exists
       delegate_to: localhost
       stat:
-        path: "{{ playbook_dir }}/../rendered/{{ inventory_hostname | lower }}.cfg"
+        path: "{{ rendered_dir }}/{{ inventory_hostname | lower }}.cfg"
       register: cfg_file_check
 
     - name: Show file check result
@@ -19,7 +21,7 @@
 
     - name: Push rendered config to device
       cisco.ios.ios_config:
-        src: "{{ playbook_dir }}/../rendered/{{ inventory_hostname | lower }}.cfg"
+        src: "{{ rendered_dir }}/{{ inventory_hostname | lower }}.cfg"
       register: config_result
       retries: 2
       delay: 5
