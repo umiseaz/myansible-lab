@@ -250,7 +250,7 @@ def check_vpnv4(host, current, baseline):
     return failures
 
 # ── Run health checks ─────────────────────────────────────────
-def run_healthcheck(nr, baseline_data):
+def run_healthcheck(nr, baseline_data, task=None):
     """Compare current state against baseline."""
     print_header("Running Health Checks")
 
@@ -285,12 +285,15 @@ def run_healthcheck(nr, baseline_data):
         baseline_host = baseline_data["hosts"][host_name]
         failures = []
 
-        # Run checks based on role
-        failures += check_ospf(host_name, current, baseline_host)
-        failures += check_ldp(host_name, current, baseline_host)
-        failures += check_bgp(host_name, current, baseline_host)
+        # Run checks based on role, limited to --task if given
+        if task in (None, "ospf"):
+            failures += check_ospf(host_name, current, baseline_host)
+        if task in (None, "ldp"):
+            failures += check_ldp(host_name, current, baseline_host)
+        if task in (None, "bgp"):
+            failures += check_bgp(host_name, current, baseline_host)
 
-        if role in ["pe", "rr"]:
+        if role in ["pe", "rr"] and task in (None, "vpnv4"):
             failures += check_vpnv4(host_name, current, baseline_host)
 
         if failures:
@@ -331,6 +334,8 @@ def main():
     parser = argparse.ArgumentParser(description="MPLS L3VPN Lab — Health Check")
     parser.add_argument("--baseline", action="store_true", help="Capture baseline state")
     parser.add_argument("--host", nargs="+", help="Specific host(s) to check")
+    parser.add_argument("--task", choices=["ospf", "ldp", "bgp", "vpnv4"],
+                        help="Run only this check (default: all)")
     args = parser.parse_args()
 
     # Init Nornir — nornir_config.yaml paths are CWD-relative
@@ -356,7 +361,7 @@ def main():
     print(f"{CYAN}Baseline from: {baseline_data['timestamp']}{RESET}")
 
     # Run health checks
-    failures = run_healthcheck(nr, baseline_data)
+    failures = run_healthcheck(nr, baseline_data, task=args.task)
     sys.exit(1 if failures else 0)
 
 

@@ -12,7 +12,7 @@ pipeline {
             steps {
                 sh '''
                     echo "── Python syntax check ──"
-                    python3 -m py_compile healthcheck.py ci/check_vrf_consistency.py
+                    python3 -m py_compile healthcheck.py ci/check_vrf_consistency.py ci/check_data_consistency.py
 
                     echo "── YAML lint (inventory) ──"
                     python3 -m yamllint -d "{extends: default, rules: {line-length: disable, document-start: disable}}" inventory/ nornir_config.yaml
@@ -71,6 +71,7 @@ sys.exit(1 if failed else 0)
                 sh '''
                     . venv/bin/activate
                     python3 ci/check_vrf_consistency.py
+                    python3 ci/check_data_consistency.py
                 '''
             }
         }
