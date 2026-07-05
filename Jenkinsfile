@@ -15,7 +15,7 @@ pipeline {
                     python3 -m py_compile healthcheck.py ci/check_vrf_consistency.py
 
                     echo "── YAML lint (inventory) ──"
-                    python3 -m yamllint -d "{extends: default, rules: {line-length: disable, document-start: disable}}" inventory/
+                    python3 -m yamllint -d "{extends: default, rules: {line-length: disable, document-start: disable}}" inventory/ nornir_config.yaml
                 '''
             }
         }

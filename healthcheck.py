@@ -333,18 +333,9 @@ def main():
     parser.add_argument("--host", nargs="+", help="Specific host(s) to check")
     args = parser.parse_args()
 
-    # Init Nornir
-    nr = InitNornir(
-        runner={"plugin": "threaded", "options": {"num_workers": 5}},
-        inventory={
-            "plugin": "SimpleInventory",
-            "options": {
-                "host_file":     os.path.join(BASE_DIR, "nornir_inventory/hosts.yaml"),
-                "group_file":    os.path.join(BASE_DIR, "nornir_inventory/groups.yaml"),
-                "defaults_file": os.path.join(BASE_DIR, "nornir_inventory/defaults.yaml"),
-            },
-        },
-    )
+    # Init Nornir — nornir_config.yaml paths are CWD-relative
+    os.chdir(BASE_DIR)
+    nr = InitNornir(config_file="nornir_config.yaml")
 
     # Filter hosts if specified
     if args.host:

@@ -1,0 +1,14 @@
+# Nornir configuration for healthcheck.py — inventory + runner.
+# Paths are relative to the repo root; the script chdirs here before init.
+---
+inventory:
+  plugin: SimpleInventory
+  options:
+    host_file: "nornir_inventory/hosts.yaml"
+    group_file: "nornir_inventory/groups.yaml"
+    defaults_file: "nornir_inventory/defaults.yaml"
+
+runner:
+  plugin: threaded
+  options:
+    num_workers: 10
