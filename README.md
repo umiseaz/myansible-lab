@@ -27,13 +27,15 @@ Built to directly compare Nornir/Python and Ansible as automation tools against 
 templates/             Same 12 Jinja2 templates as mynornir-lab
 inventory/              Ansible inventory: hosts.yaml, group_vars/, host_vars/
 nornir_inventory/       Minimal Nornir-format inventory — used only by healthcheck.py
+nornir_config.yaml      Nornir config for healthcheck.py (named to avoid confusion with ansible.cfg)
 playbooks/
   render.yaml           Render-only — no device contact
   deploy.yaml           Push-only
   save.yaml             write memory across all devices
 ci/
-  check_vrf_consistency.py   Same CI gate as mynornir-lab, path-adjusted for inventory/host_vars/
-healthcheck.py           Copied from mynornir-lab, unmodified logic
+  check_vrf_consistency.py    Same CI gate as mynornir-lab, path-adjusted for inventory/host_vars/
+  check_data_consistency.py   Same CI gate as mynornir-lab, adapted to the Ansible inventory format
+healthcheck.py           Copied from mynornir-lab, kept in sync (same logic, --task filter included)
 textfsm/                 Copied from mynornir-lab
 
 Jenkinsfile              Branch-aware CI/CD pipeline definition
@@ -65,7 +67,7 @@ Quick Syntax Checks     (py_compile, yamllint)
 Setup venv              (pip install -r requirements.txt + ansible-galaxy collection install cisco.ios)
 Template Syntax Check   (Jinja2 parse check)
 Render Configs           (ansible-playbook playbooks/render.yaml)
-Validate                 (ci/check_vrf_consistency.py)
+Validate                 (ci/check_vrf_consistency.py + ci/check_data_consistency.py)
 Deploy (main only)       (healthcheck.py → deploy.yaml → healthcheck.py → save.yaml)
 Tag last successful deploy
 ```
