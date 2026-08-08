@@ -1,5 +1,5 @@
 # Nornir configuration for healthcheck.py — inventory + runner.
-# Paths are relative to the repo root; the script chdirs here before init.
+# Paths are relative to verification/; the script chdirs here before init.
 ---
 inventory:
   plugin: SimpleInventory

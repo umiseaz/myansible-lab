@@ -1,5 +1,7 @@
 # MPLS L3VPN Network Automation — Ansible + Jenkins CI/CD
 
+> **Note on `verification/`:** this repo is Ansible-based, but the health-check tooling under `verification/` is Nornir/Python. That's deliberate, not leftover code — `verification/healthcheck.py` is shared verification logic, reused as-is from the sibling `mynornir-lab` repo, so that network health is checked the same trusted way regardless of which tool (Ansible or Nornir) pushed the change. See "Why Nornir shows up here too" below.
+
 The Ansible half of a two-toolchain network automation comparison project, built against the same 10-router Cisco IOS MPLS L3VPN lab (GNS3/IOU) and the same Jinja2 templates as the sibling Nornir repo.
 
 > **Companion repos:**
@@ -16,10 +18,10 @@ Built to directly compare Nornir/Python and Ansible as automation tools against 
 |---|---|
 | Templating | Jinja2 — same 12 templates as `mynornir-lab`, byte-identical rendered output |
 | Automation | ansible-core 2.21, `cisco.ios` collection, ansible-pylibssh |
-| Verification | A dedicated small Nornir inventory (`nornir_inventory/`) drives `healthcheck.py` — Ansible pushes config, Nornir verifies live state via TextFSM |
+| Verification | A dedicated small Nornir inventory (`verification/nornir_inventory/`) drives `verification/healthcheck.py` — Ansible pushes config, Nornir verifies live state via TextFSM |
 | CI/CD | Jenkins (Docker, custom image), Multibranch Pipeline, GitHub PAT auth |
 
-**Why Nornir shows up here too:** `healthcheck.py` was written once, in the Nornir repo, and copied over rather than rewritten — it's a lightweight SSH/parsing tool, not a deployment tool, so reusing it here isn't a contradiction of "two separate toolchains." It needs its own Nornir-format inventory (`nornir_inventory/`), kept deliberately separate from Ansible's own `inventory/` folder so the two data models never get confused.
+**Why Nornir shows up here too:** `healthcheck.py` was written once, in the Nornir repo, and copied over rather than rewritten — it's a lightweight SSH/parsing tool, not a deployment tool, so reusing it here isn't a contradiction of "two separate toolchains." It needs its own Nornir-format inventory (`nornir_inventory/`), kept deliberately separate from Ansible's own `inventory/` folder so the two data models never get confused. All of this Nornir-only tooling is grouped under `verification/` to make that separation obvious at a glance.
 
 ---
 
@@ -28,8 +30,6 @@ Built to directly compare Nornir/Python and Ansible as automation tools against 
 ```
 templates/             Same 12 Jinja2 templates as mynornir-lab
 inventory/              Ansible inventory: hosts.yaml, group_vars/, host_vars/
-nornir_inventory/       Minimal Nornir-format inventory — used only by healthcheck.py
-nornir_config.yaml      Nornir config for healthcheck.py (named to avoid confusion with ansible.cfg)
 playbooks/
   render.yaml           Render-only — no device contact
   deploy.yaml           Push-only
@@ -37,8 +37,12 @@ playbooks/
 ci/
   check_vrf_consistency.py    Same CI gate as mynornir-lab, path-adjusted for inventory/host_vars/
   check_data_consistency.py   Same CI gate as mynornir-lab, adapted to the Ansible inventory format
-healthcheck.py           Copied from mynornir-lab, kept in sync (same logic, --task filter included)
-textfsm/                 Copied from mynornir-lab
+verification/           Nornir-based health-check tooling, deliberately grouped and kept separate from Ansible's own inventory/ (see note at top)
+  healthcheck.py           Copied from mynornir-lab, kept in sync (same logic, --task filter included)
+  nornir_config.yaml       Nornir config for healthcheck.py (named to avoid confusion with ansible.cfg)
+  nornir_inventory/        Minimal Nornir-format inventory — used only by healthcheck.py
+  textfsm/                 Copied from mynornir-lab
+  baseline.json            Captured healthy-state snapshot healthcheck.py compares against
 
 Jenkinsfile              Branch-aware CI/CD pipeline definition
 requirements.txt         Ansible-only — deliberately NOT shared with mynornir-lab's requirements.txt
@@ -50,9 +54,9 @@ requirements.txt         Ansible-only — deliberately NOT shared with mynornir-
 
 ```bash
 ansible-playbook playbooks/render.yaml
-python3 healthcheck.py
+python3 verification/healthcheck.py
 ansible-playbook playbooks/deploy.yaml
-python3 healthcheck.py
+python3 verification/healthcheck.py
 ansible-playbook playbooks/save.yaml
 ```
 
@@ -70,7 +74,7 @@ Setup venv              (pip install -r requirements.txt + ansible-galaxy collec
 Template Syntax Check   (Jinja2 parse check)
 Render Configs           (ansible-playbook playbooks/render.yaml)
 Validate                 (ci/check_vrf_consistency.py + ci/check_data_consistency.py)
-Deploy (main only)       (healthcheck.py → deploy.yaml → healthcheck.py → save.yaml)
+Deploy (main only)       (verification/healthcheck.py → deploy.yaml → verification/healthcheck.py → save.yaml)
 Tag last successful deploy
 ```
 
