@@ -1,7 +1,7 @@
 ---
 - name: Deploy MPLS L3VPN configs to devices
   hosts: all
-  gather_facts: no
+  gather_facts: false
   vars:
     rendered_dir: "{{ (playbook_dir + '/../rendered') | realpath }}"
   tasks:
