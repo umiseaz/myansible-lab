@@ -1,7 +1,6 @@
 # host_vars/pe2.yaml
 hostname: PE2
 loopback_name: Loopback0
-role: pe
 iou: 4
 
 domain_name: lab.local

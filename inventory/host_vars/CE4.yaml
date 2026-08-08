@@ -1,7 +1,6 @@
 # host_vars/ce4.yaml
 hostname: CE4
 loopback_name: Loopback0
-role: ce
 iou: 10
 
 domain_name: lab.local

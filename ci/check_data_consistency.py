@@ -26,7 +26,9 @@ later:
 
   Inventory <-> host_vars sync
     - every host_vars file has a matching inventory entry and vice versa
-    - role in host_vars matches the host's inventory group (pe/p/rr/ce)
+    - each host's inventory group is a known role group (pe/p/rr/ce); role
+      is derived from group membership (same as Ansible's group_vars), not
+      duplicated in host_vars
 
 Exit codes:
     0 — all checks passed
@@ -360,10 +362,11 @@ def check_inventory_sync(hosts):
             clean = False
             continue
         _, group = inv_lower[hostname.lower()]
-        if group in ROLE_GROUPS and group != data.get("role"):
-            fail(f"{hostname}: role '{data.get('role')}' in host_vars but "
-                 f"in inventory group '{group}'")
+        if group not in ROLE_GROUPS:
+            fail(f"{hostname}: inventory group '{group}' is not a known role group {sorted(ROLE_GROUPS)}")
             clean = False
+        else:
+            data["role"] = group
 
     for name in inv_hosts:
         if name.lower() not in hv_lower:
@@ -371,7 +374,7 @@ def check_inventory_sync(hosts):
             clean = False
 
     if clean:
-        ok(f"{len(hosts)} host_vars files match {len(inv_hosts)} inventory hosts (names and role groups)")
+        ok(f"{len(hosts)} host_vars files match {len(inv_hosts)} inventory hosts; role derived from inventory group")
 
 
 def main():

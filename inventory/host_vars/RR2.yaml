@@ -1,7 +1,6 @@
 # host_vars/rr2.yaml
 hostname: RR2
 loopback_name: Loopback0
-role: rr
 iou: 6
 
 domain_name: lab.local

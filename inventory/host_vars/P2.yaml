@@ -1,7 +1,6 @@
 # host_vars/p2.yaml
 hostname: P2
 loopback_name: Loopback0
-role: p
 iou: 3
 
 domain_name: lab.local
