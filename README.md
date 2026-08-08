@@ -2,7 +2,9 @@
 
 The Ansible half of a two-toolchain network automation comparison project, built against the same 10-router Cisco IOS MPLS L3VPN lab (GNS3/IOU) and the same Jinja2 templates as the sibling Nornir repo.
 
-> **Companion repo:** [`mynornir-lab`](https://github.com/umiseaz/mynornir-lab) — the primary repo for this project. It documents the full lab topology, tech stack rationale, and three additional postmortems. This repo covers what's specific to the Ansible implementation.
+> **Companion repos:**
+> [`mynornir-lab`](https://github.com/umiseaz/mynornir-lab) — the primary repo for this project. It documents the full lab topology, tech stack rationale, and three additional postmortems. This repo covers what's specific to the Ansible implementation.
+> [`mypyats-lab`](https://github.com/umiseaz/mypyats-lab) — Cisco's own pyATS/Genie framework verifying the same lab, extended into a working AI-assisted operations layer (MCP + a locally-run model) for querying live device state.
 
 Built to directly compare Nornir/Python and Ansible as automation tools against identical infrastructure — same data model, same templates, same CI/CD discipline, different execution engine.
 
