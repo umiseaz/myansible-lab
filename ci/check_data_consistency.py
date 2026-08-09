@@ -42,6 +42,10 @@ import glob
 import ipaddress
 import yaml
 
+# This check never reads vault-encrypted values (only field names/IPs/etc.)
+# — just avoid crashing yaml.safe_load() when it hits a !vault-tagged line.
+yaml.SafeLoader.add_constructor("!vault", lambda loader, node: "<vault-encrypted>")
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 RED    = "\033[91m"
