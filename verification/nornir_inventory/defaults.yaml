@@ -1,7 +1,7 @@
 # inventory/defaults.yaml
 ---
-username: admin
-password: admin
+username: "${NORNIR_USERNAME}"
+password: "${NORNIR_PASSWORD}"
 
 ntp:
   servers:
@@ -16,6 +16,6 @@ syslog:
 
 ospf_auth:
   key_id: 1
-  key: "ospf@lab123"
+  key: "${OSPF_AUTH_KEY}"
 
 ospf_reference_bandwidth: 100

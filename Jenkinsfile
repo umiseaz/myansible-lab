@@ -12,7 +12,7 @@ pipeline {
             steps {
                 sh '''
                     echo "── Python syntax check ──"
-                    python3 -m py_compile verification/healthcheck.py ci/check_vrf_consistency.py ci/check_data_consistency.py
+                    python3 -m py_compile verification/healthcheck.py verification/secrets_resolver.py verification/nornir_transform.py ci/check_vrf_consistency.py ci/check_data_consistency.py
 
                     echo "── YAML lint (inventory) ──"
                     python3 -m yamllint -d "{extends: default, rules: {line-length: disable, document-start: disable}}" inventory/ verification/nornir_config.yaml
@@ -59,10 +59,15 @@ sys.exit(1 if failed else 0)
 
         stage('Render Configs') {
             steps {
-                sh '''
-                    . venv/bin/activate
-                    ansible-playbook playbooks/render.yaml
-                '''
+                withCredentials([
+                    string(credentialsId: 'ansible-vault-password', variable: 'ANSIBLE_VAULT_PASSWORD')
+                ]) {
+                    sh '''
+                        . venv/bin/activate
+                        echo "$ANSIBLE_VAULT_PASSWORD" > .vault_pass
+                        ansible-playbook playbooks/render.yaml
+                    '''
+                }
             }
         }
 
@@ -81,13 +86,21 @@ sys.exit(1 if failed else 0)
                 branch 'main'
             }
             steps {
-                sh '''
-                    . venv/bin/activate
-                    python3 verification/healthcheck.py
-                    ansible-playbook playbooks/deploy.yaml
-                    python3 verification/healthcheck.py
-                    ansible-playbook playbooks/save.yaml
-                '''
+                withCredentials([
+                    string(credentialsId: 'ansible-vault-password', variable: 'ANSIBLE_VAULT_PASSWORD'),
+                    usernamePassword(credentialsId: 'lab-router-admin-creds', usernameVariable: 'NORNIR_USERNAME', passwordVariable: 'NORNIR_PASSWORD'),
+                    string(credentialsId: 'lab-router-enable-secret', variable: 'NORNIR_ENABLE_SECRET'),
+                    string(credentialsId: 'lab-ospf-auth-key', variable: 'OSPF_AUTH_KEY')
+                ]) {
+                    sh '''
+                        . venv/bin/activate
+                        echo "$ANSIBLE_VAULT_PASSWORD" > .vault_pass
+                        python3 verification/healthcheck.py
+                        ansible-playbook playbooks/deploy.yaml
+                        python3 verification/healthcheck.py
+                        ansible-playbook playbooks/save.yaml
+                    '''
+                }
             }
         }
 
@@ -114,6 +127,7 @@ sys.exit(1 if failed else 0)
     post {
         always {
             archiveArtifacts artifacts: 'rendered/*.cfg', fingerprint: true, allowEmptyArchive: true
+            sh 'rm -f .vault_pass'
         }
         success {
             echo "Build succeeded on branch ${env.BRANCH_NAME}"

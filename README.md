@@ -46,6 +46,7 @@ glance.
 ```
 templates/              The same 12 Jinja2 templates as mynornir-lab
 inventory/               Ansible inventory: hosts.yaml, group_vars/, host_vars/
+                         Real secrets are vault-encrypted in place — see "Secrets management" below
 playbooks/
   render.yaml             Builds configs only, no device contact
   deploy.yaml             Pushes configs
@@ -53,16 +54,87 @@ playbooks/
 ci/
   check_vrf_consistency.py    Same check as mynornir-lab, adjusted for inventory/host_vars/
   check_data_consistency.py   Same check as mynornir-lab, adapted to the Ansible inventory format
+rendered/                Generated device configs — gitignored, contains real secrets, regenerate with render.yaml
 verification/            Nornir-based health-check tooling, kept separate from Ansible's own inventory/ (see note above)
   healthcheck.py            Copied from mynornir-lab, kept in sync (same logic, same --task filter)
   nornir_config.yaml        Nornir config just for healthcheck.py (named to avoid confusion with ansible.cfg)
-  nornir_inventory/         A minimal Nornir inventory, used only by healthcheck.py
+  nornir_inventory/         A minimal Nornir inventory, used only by healthcheck.py.
+                            Real secrets are "${VAR}" placeholders, not vault-encrypted — see below
+  secrets_resolver.py       Copied from mynornir-lab — turns "${VAR}" into a real value from .env
+  nornir_transform.py       Copied from mynornir-lab — applies that to nornir_inventory/ on load
   textfsm/                  Copied from mynornir-lab
   baseline.json             The saved "known-good" state healthcheck.py compares against
 
+.vault_pass              Gitignored — the ansible-vault password, local only
+.env.example             Template listing the secrets the verification/ side needs (no real values)
 Jenkinsfile              The Jenkins CI/CD pipeline
 requirements.txt         Ansible-only — kept separate from mynornir-lab's requirements.txt on purpose
 ```
+
+---
+
+## Secrets management
+
+Same problem as `mynornir-lab` — this repo used to have real passwords
+(`admin`, `cisco`, `ospf@lab123`) committed in plain text — but a different
+fix, because this repo actually has **two separate places** secrets live,
+and they need two different tools.
+
+**Why this exists:** this repo is public on GitHub. Anyone who could see the
+code could previously read the real router passwords in the YAML files.
+
+**1. Ansible's own inventory (`inventory/group_vars/`, `inventory/host_vars/`) → `ansible-vault`.**
+Every real secret there is now encrypted *in place*, right inside the YAML
+file, using Ansible's own built-in tool. It looks like this:
+```yaml
+# Before — anyone could read this
+ansible_password: admin
+
+# After — encrypted, safe to commit
+ansible_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64393231616235366431633763313731366537613630623865653934656265...
+```
+The only thing that makes this readable again is a **vault password** —
+one single password that unlocks all of the encrypted values. That password
+lives in one local file, `.vault_pass` (gitignored, never committed).
+`ansible.cfg` points at it (`vault_password_file = .vault_pass`), so every
+`ansible-playbook`/`ansible-vault` command finds it automatically — no
+typing it in every time.
+
+If you ever need to add a new secret the same way:
+```bash
+ansible-vault encrypt_string -n 'the_variable_name' 'the real secret value'
+```
+That prints a ready-to-paste `!vault |` block — paste it into the YAML file
+in place of the plain value, keeping the same indentation as the line it
+replaced.
+
+**2. `verification/nornir_inventory/` → the same `.env` trick as mynornir-lab.**
+`verification/healthcheck.py` is Nornir/Python code, not Ansible — it has no
+idea what an `ansible-vault`-encrypted value even is. So its own small
+inventory (`nornir_inventory/`) uses the exact same mechanism as the
+`mynornir-lab` repo instead: `"${VAR_NAME}"` placeholders, filled in from a
+gitignored `.env` file at runtime. `secrets_resolver.py` and
+`nornir_transform.py` (copied straight from `mynornir-lab`) do the filling
+in. Setup is one-time: `cp .env.example .env`, then fill in the real values.
+
+**In short — two lock boxes, because two different tools open them:**
+`.vault_pass` unlocks the Ansible-side secrets; `.env` unlocks the
+verification-side ones. Both are gitignored, both live only on your machine
+(or in Jenkins credentials for CI — see below).
+
+In Jenkins, `.vault_pass`'s content comes from a Secret Text credential
+named `ansible-vault-password`, written to `.vault_pass` at the start of the
+`Render Configs` and `Deploy (main only)` stages and deleted again when the
+build finishes. The `verification/healthcheck.py` calls in `Deploy (main
+only)` reuse the same 4 credentials as `mynornir-lab`'s Jenkins pipeline
+(`lab-router-admin-creds`, `lab-router-enable-secret`, `lab-ospf-auth-key`).
+
+If you're rotating these values on the real devices, change them on the
+devices first, same reasoning as the Nornir repo: the old values already
+exist in this repo's git history, so editing `.vault_pass`/`.env` alone
+protects nothing until the devices themselves use different passwords.
 
 ---
 

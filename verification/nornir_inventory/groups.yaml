@@ -5,7 +5,7 @@ core:
     netmiko:
       extras:
         device_type: cisco_ios
-        secret: admin
+        secret: "${NORNIR_ENABLE_SECRET}"
 
 ce:
   platform: ios
@@ -13,4 +13,4 @@ ce:
     netmiko:
       extras:
         device_type: cisco_ios
-        secret: admin
+        secret: "${NORNIR_ENABLE_SECRET}"

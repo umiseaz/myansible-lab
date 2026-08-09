@@ -12,3 +12,10 @@ nornir.log
 logs/
 verification/nornir.log
 verification/logs/
+
+# Local secrets — never commit
+.env
+.vault_pass
+
+# Rendered configs contain real secrets post-render — regenerate via render.yaml
+rendered/
