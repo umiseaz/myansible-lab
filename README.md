@@ -128,8 +128,20 @@ In Jenkins, `.vault_pass`'s content comes from a Secret Text credential
 named `ansible-vault-password`, written to `.vault_pass` at the start of the
 `Render Configs` and `Deploy (main only)` stages and deleted again when the
 build finishes. The `verification/healthcheck.py` calls in `Deploy (main
-only)` reuse the same 4 credentials as `mynornir-lab`'s Jenkins pipeline
-(`lab-router-admin-creds`, `lab-router-enable-secret`, `lab-ospf-auth-key`).
+only)` reuse 3 credentials shared with `mynornir-lab`'s Jenkins pipeline
+(`lab-router-admin-creds`, `lab-router-enable-secret`, `lab-ospf-auth-key`)
+— this repo needs those plus its own `ansible-vault-password`, but never
+needs `lab-bgp-peer-password` (that one's `mynornir-lab`-only, since this
+repo's BGP peer password is encrypted straight into the YAML with
+`ansible-vault` instead of pulled from an environment variable):
+
+| Credential | myansible-lab | mynornir-lab |
+|---|---|---|
+| `lab-router-admin-creds` | yes | yes |
+| `lab-router-enable-secret` | yes | yes |
+| `lab-ospf-auth-key` | yes | yes |
+| `ansible-vault-password` | yes | no |
+| `lab-bgp-peer-password` | no | yes |
 
 If you're rotating these values on the real devices, change them on the
 devices first, same reasoning as the Nornir repo: the old values already
